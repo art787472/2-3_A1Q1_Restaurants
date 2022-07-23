@@ -1,0 +1,47 @@
+<h1 class="mb-1 restaurant-show-title">{{restaurant.name}}</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-10 mx-auto">
+
+      <p class="mb-1">
+        <span class="text-secondary">
+          <i class="fas fa-utensils "></i>
+          類別：
+        </span>
+        {{restaurant.category}}
+      </p>
+
+      <p class="mb-1">
+        <span class="text-secondary">
+          <i class="fas fa-map-marker-alt "></i>
+          地址：
+        </span>
+        {{restaurant.location}}
+        <a href="{{restaurant.google_map}}" class="text-secondary" target="_blank">
+          <i class="fas fa-location-arrow  fa-xs"></i>
+        </a>
+      </p>
+
+      <p class="mb-1">
+        <span class="text-secondary">
+          <i class="fas fa-mobile-alt "></i>
+          電話：
+        </span>
+        {{restaurant.phone}}
+      </p>
+
+      <p class="mb-5">
+        {{restaurant.description}}
+      </p>
+
+      <img class="rounded mx-auto d-block mb-4 w-100" src="{{restaurant.image}}" alt="{{restaurant.name}}"
+        style="max-width: 600px;">
+
+      <iframe class="rounded mx-auto d-block mb-4 w-100" width="600" height="450" style="border:0; margin: 0 auto"
+        loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key={{apiKey}}
+            &q={{restaurant.name}}+{{restaurant.location}}">
+      </iframe>
+
+    </div>
+  </div>
+</div>
