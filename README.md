@@ -15,7 +15,7 @@
 1. 將此專案 clone 至本機  
    `git clone https://github.com/art787472/2-3_A1Q1_Restaurants.git`
 2. 進入存放專案的資料夾  
-   `cd 2-3_A1Q1_Restaurants.gi`
+   `cd 2-3_A1Q1_Restaurants`
 3. 安裝 npm 套件  
    `npm install`
 4. 在目錄中建立 .env 檔案，根據 .env.example 格式，將 api 金鑰取代 [google 的 API key]。注意不須中括號也不用引號。  
