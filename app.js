@@ -18,14 +18,14 @@ app.use(express.static('public'))
 // json file
 
 const restaurants = require('./restaurant.json')
-
+const indexTitle = "我的餐廳"
 app.get('/', (req, res) => {
-  res.render('index', { pageTitle: 'Index Page', styleSheetLink: '/stylesheets/index.css', restaurants: restaurants.results })
+  res.render('index', { pageTitle: indexTitle, styleSheetLink: '/stylesheets/index.css', restaurants: restaurants.results })
 })
 
 app.get('/restaurants/:restaurantId', (req, res) => {
   const restaurant = restaurants.results.find(restaurant => restaurant.id.toString() === req.params.restaurantId)
-  res.render('show', { pageTitle: 'Index Page', styleSheetLink: '/stylesheets/show.css', restaurant: restaurant, apiKey: apiKey })
+  res.render('show', { pageTitle: restaurant.name, styleSheetLink: '/stylesheets/show.css', restaurant: restaurant, apiKey: apiKey })
 })
 
 app.get('/search', (req, res) => {
