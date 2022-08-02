@@ -7,7 +7,6 @@ const restaurantSchema = new Schema({
   },
  name_en: {
     type: String, // 資料型別是字串
-    required: true 
   },
   category: {
     type: String
