@@ -47,8 +47,17 @@ app.get('/', (req, res) => {
   
 })
 
-app.get('/restaurants/add', (req, res) => {
+app.get('/restaurants/new-page', (req, res) => {
   res.render('addform')
+})
+
+app.get('/restaurants/:restaurantId/edit-page', (req, res) => {
+  Restaurants.findById(req.params.restaurantId)
+    .lean()
+    .then(restaurant => {
+      res.render('edit', { restaurant })
+    })
+    .catch(console.error)
 })
 
 app.post('/restaurants/new', (req, res) => {
@@ -67,7 +76,27 @@ app.get('/restaurants/:restaurantId', (req, res) => {
       res.render('show', { pageTitle: restaurant.name, styleSheetLink: '/stylesheets/show.css', restaurant: restaurant, apiKey: apiKey })
     })
     .catch(console.error)
-  
+})
+
+app.post('/restaurants/:restaurantId/edit', (req, res) => {
+  const id = req.params.restaurantId
+  const {name, name_en, category, image, location, phone, google_map, rating, description} = req.body
+  const editedData = req.body
+  return Restaurants.findById(id)
+    .then(restaurant => {
+      restaurant.name = name
+      restaurant.name_en = name_en
+      restaurant.category = category
+      restaurant.image = image
+      restaurant.location = location
+      restaurant.phone = phone
+      restaurant.google_map = google_map
+      restaurant.rating = rating
+      restaurant.description = description
+      return restaurant.save()
+    })
+    .then(()=> res.redirect(`/restaurants/${id}`))
+    .catch(console.error)
 })
 
 app.get('/search', (req, res) => {
