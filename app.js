@@ -2,6 +2,18 @@ const express = require('express')
 require('dotenv').config()
 const app = express()
 
+const mongoose = require('mongoose') // 載入 mongoose
+const uri = process.env.MONGODB_URI 
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+const db = mongoose.connection
+db.on('error', () => {
+  console.log('mongodb error!')
+})
+db.once('open', () => {
+  console.log('mongodb connected!')
+})
+
+
 const port = 3000
 
 const apiKey = process.env.API_KEY
