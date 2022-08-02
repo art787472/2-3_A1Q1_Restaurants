@@ -9,25 +9,50 @@
   <div class="search-bar-outer">
     <div class="search-bar-inner">
       <form action="/search">
+      {{!-- invisible input to save search filter --}}
+        <input type="hidden" class="filter" name="filter" value="name">
+
         <h4 class="mb-2">尋找餐廳：</h4>
         <div class="input-group">
-          <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
+          <input type="text" name="keyword" class="form-control search-input" placeholder="請輸入餐廳名稱" aria-label="Restaurant Name..."
             value="{{input}}" aria-describedby="search-button">
           <div class="input-group-append">
-            <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
+
+            <div class="btn-group">
+
+             
+                <div class="btn-group search-option" role="group">
+                  <button type="button" class="btn dropdown-toggle btn-major" data-toggle="dropdown" aria-expanded="false">
+                    依餐廳名稱
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item filter-name" >依餐廳名稱</a>
+                    <a class="dropdown-item  filter-location" >依地區</a>
+                    <a class="dropdown-item filter-category" >依類別</a>
+                  </div>
+                </div>
+                <button class="btn btn-major" type="submit" id="search-button">
+                  <i class="fas fa-search"></i>
+                </button>
+
+
+            </div>
+            
           </div>
         </div>
       </form>
-      <a href="/restaurants/new-page">新增餐廳</a>
+
+        <a class="btn btn-major btn-block mt-3" href="/restaurants/new-page">新增餐廳</a>
+      
     </div>
     {{#if isNotFind}}
     <div class="alert alert-warning alert-dismissible fade show mb-2" role="alert">
-  <span>抱歉！找不到<strong>{{searchKeyword}}</strong>的搜尋結果</span>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-{{/if}}
+      <span>抱歉！找不到<strong>「{{searchKeyword}}」</strong>的搜尋結果</span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {{/if}}
   </div>
 </div>
 
@@ -35,10 +60,8 @@
 
 <div class="container mt-5">
   <div class="row">
-    <div class="col-md-10 col-12 mx-auto">
-      <div class="card-columns">
-
         {{#each restaurants}}
+        <div class="col-md-4">
         <a href="/restaurants/{{this._id}}" class="text-secondary">
           <div class="card mb-3">
             <div class="card-img__container"><img class="card-img-top" src=" {{this.image}}" alt="{{this.name}}"></div>
@@ -50,18 +73,54 @@
                 <i class="fas fa-utensils "></i> {{this.category}}
               </div>
 
-              <span class="badge badge-pill badge-danger font-weight-normal">
-                {{this.rating}}
-                <i class="fas fa-star fa-xs"></i>
-              </span>
-
-              <a href="/restaurants/{{this._id}}/edit-page">編輯</a>
+              <div class="d-flex">
+                <span class="badge badge-pill badge-danger font-weight-normal">
+                  {{this.rating}}
+                  <i class="fas fa-star fa-xs"></i>
+                </span>
+                
+                  <a class="btn btn-info ml-auto" href="/restaurants/{{this._id}}/edit-page">編輯</a>
+                  
+                  <form action="./restaurants/{{ this._id }}/delete" method="POST" style="display: inline;">
+                    <button class="btn btn-danger" type="submit">刪除</button>
+                  </form>
+                
+            </div>
             </div>
           </div>
         </a>
+        </div>
         {{/each}}
 
-      </div>
-    </div>
+      
+    
   </div>
 </div>
+
+<script>
+ const searchOption = document.querySelector('.search-option')
+ const searchBtn = searchOption.querySelector('button')
+ const filter = document.querySelector('.filter')
+ const searchInput = document.querySelector('.search-input')
+
+ searchOption.addEventListener('click', e => {
+  if (e.target.matches('.dropdown-item')) {
+    searchBtn.textContent = e.target.textContent
+    switch(searchBtn.textContent) {
+      case '依餐廳名稱':
+        filter.value = 'name'
+        searchInput.placeholder = '請輸入餐廳名稱'
+        break
+      case '依地區':
+        filter.value = 'location'
+        searchInput.placeholder = '請輸入餐廳地點'
+        break
+      case '依類別':
+        filter.value = 'category'
+        searchInput.placeholder = '請輸入餐廳類別'
+        break
+    }
+  }
+ })
+
+</script>

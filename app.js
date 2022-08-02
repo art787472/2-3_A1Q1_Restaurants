@@ -4,7 +4,8 @@ const app = express()
 
 const mongoose = require('mongoose') // 載入 mongoose
 const uri = process.env.MONGODB_URI
-const Restaurants = require('./models/restaurants') 
+
+// connect to database
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
 db.on('error', () => {
@@ -33,89 +34,10 @@ const bodyParser = require('body-parser')
 // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// json file
+const routes = require('./routes')
 
-//const restaurants = require('./restaurant.json')
-const indexTitle = "我的餐廳"
-app.get('/', (req, res) => {
-  Restaurants.find()
-    .lean()
-    .then(restaurants => {
-      res.render('index', { pageTitle: indexTitle, styleSheetLink: '/stylesheets/index.css', restaurants: restaurants })
-    })
-    .catch(console.error)
-  
+app.use(routes)
+
+app.listen(port, () => {
+  console.log(`app is on: localhost/${port}`)
 })
-
-app.get('/restaurants/new-page', (req, res) => {
-  res.render('addform')
-})
-
-app.get('/restaurants/:restaurantId/edit-page', (req, res) => {
-  Restaurants.findById(req.params.restaurantId)
-    .lean()
-    .then(restaurant => {
-      res.render('edit', { restaurant })
-    })
-    .catch(console.error)
-})
-
-app.post('/restaurants/new', (req, res) => {
-   const restaurantData = req.body
-   console.log(restaurantData)       // 從 req.body 拿出表單裡的 name 資料
-  return Restaurants.create(restaurantData)     // 存入資料庫
-    .then(() => res.redirect('/')) // 新增完成後導回首頁
-    .catch(error => console.log(error))
-  
-})
-
-app.get('/restaurants/:restaurantId', (req, res) => {
-   Restaurants.findById(req.params.restaurantId)
-    .lean()
-    .then(restaurant => {
-      res.render('show', { pageTitle: restaurant.name, styleSheetLink: '/stylesheets/show.css', restaurant: restaurant, apiKey: apiKey })
-    })
-    .catch(console.error)
-})
-
-app.post('/restaurants/:restaurantId/edit', (req, res) => {
-  const id = req.params.restaurantId
-  const {name, name_en, category, image, location, phone, google_map, rating, description} = req.body
-  const editedData = req.body
-  return Restaurants.findById(id)
-    .then(restaurant => {
-      restaurant.name = name
-      restaurant.name_en = name_en
-      restaurant.category = category
-      restaurant.image = image
-      restaurant.location = location
-      restaurant.phone = phone
-      restaurant.google_map = google_map
-      restaurant.rating = rating
-      restaurant.description = description
-      return restaurant.save()
-    })
-    .then(()=> res.redirect(`/restaurants/${id}`))
-    .catch(console.error)
-})
-
-app.get('/search', (req, res) => {
-  const input = req.query.keyword
-  const keyword = input.trim().toLowerCase()
-  const restaurantsList = restaurants.results.filter(restaurant => {
-    return restaurant.name.toLowerCase().includes(keyword) || restaurant.category.includes(keyword)
-  })
-  if (restaurantsList.length === 0) {
-    return res.render('index', {
-    restaurants: restaurants.results, keyword, pageTitle: 'Search Page', styleSheetLink: '/stylesheets/index.css', input: '', isNotFind: true, searchKeyword: keyword
-    
-  })
-  } 
-     res.render('index', {
-    restaurants: restaurantsList, keyword, pageTitle: 'Search Page', styleSheetLink: '/stylesheets/index.css', input, isNotFind: false
-  })
-  
- 
-})
-
-app.listen(port)
