@@ -157,4 +157,9 @@
     anchorPoint: new google.maps.Point(0, -29),
   });
 
+  // set image preview
+  photo.addEventListener('change', e => {
+   imagePreview.src = e.target.value
+  })
+
 </script>
