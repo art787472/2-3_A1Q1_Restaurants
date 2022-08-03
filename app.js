@@ -15,7 +15,7 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-const port = 3000
+const port = 3001
 
 // require handle-bar
 const exphbs = require('express-handlebars')
