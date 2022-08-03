@@ -15,10 +15,8 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-
 const port = 3000
 
-const apiKey = process.env.API_KEY
 // require handle-bar
 const exphbs = require('express-handlebars')
 

@@ -4,11 +4,9 @@
 <div class="container search-bar">
   <!-- alert  -->
 
-
-
   <div class="search-bar-outer">
     <div class="search-bar-inner">
-      <form action="/search">
+      <form action="/search" class="search-form">
       {{!-- invisible input to save search filter --}}
         <input type="hidden" class="filter" name="filter" value="name">
 
@@ -56,14 +54,17 @@
   </div>
 </div>
 
+
+
 <!-- restaurant list -->
 
 <div class="container mt-5">
   <div class="row">
         {{#each restaurants}}
         <div class="col-md-4">
-        <a href="/restaurants/{{this._id}}" class="text-secondary">
+          <a href="/restaurants/{{this._id}}">
           <div class="card mb-3">
+            
             <div class="card-img__container"><img class="card-img-top" src=" {{this.image}}" alt="{{this.name}}"></div>
 
             <div class="card-body p-3">
@@ -79,22 +80,58 @@
                   <i class="fas fa-star fa-xs"></i>
                 </span>
                 
-                  <a class="btn btn-info ml-auto" href="/restaurants/{{this._id}}/edit-page">編輯</a>
-                  
-                  <form action="./restaurants/{{ this._id }}/delete" method="POST" style="display: inline;">
-                    <button class="btn btn-danger" type="submit">刪除</button>
-                  </form>
-                
+                <div class="btn-group ml-auto">
+                  <a class="btn btn-info rounded-left" href="/restaurants/{{this._id}}/edit-page">編輯</a>
+                  <button type="button" class="btn btn-danger delete-btn" data-toggle="modal" data-target="#deleteModal" data-id="{{ this._id }}">
+                    刪除
+                  </button>
+                </div>
+
             </div>
             </div>
           </div>
-        </a>
+          </a>
         </div>
         {{/each}}
 
       
     
   </div>
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="deleteModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     
+      <div class="modal-body">
+        <p>確定要刪除嗎？</p>
+      </div>
+
+      <div class="modal-footer">
+        <form action="" method="POST" style="display: inline;">
+          <button class="btn btn-danger" type="submit">刪除</button>
+        </form>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="modal fade" tabindex="-1" role="dialog" id="alertModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     
+      <div class="modal-body">
+        <p>搜尋欄不可為空</p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">好，我答應不會亂玩網站</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 </div>
 
 <script>
@@ -102,6 +139,9 @@
  const searchBtn = searchOption.querySelector('button')
  const filter = document.querySelector('.filter')
  const searchInput = document.querySelector('.search-input')
+ const searchForm = document.querySelector('.search-form')
+ const modalAlert = document.querySelector('.modal-footer form')
+ const deleteBtn = document.querySelectorAll('.delete-btn')
 
  searchOption.addEventListener('click', e => {
   if (e.target.matches('.dropdown-item')) {
@@ -122,5 +162,23 @@
     }
   }
  })
+
+deleteBtn.forEach(btn => {
+  btn.addEventListener('click', e => {
+  const id = e.target.dataset.id
+  console.log(id)
+  modalAlert.action = `/restaurants/${id}/delete`
+})
+})
+
+searchForm.addEventListener('submit', e => {
+  if (searchInput.value.trim().length === 0) {
+    e.preventDefault()
+    e.stopPropagation()
+    $('#alertModal').modal('show')
+    console.log('alert')
+  }
+})
+
 
 </script>
