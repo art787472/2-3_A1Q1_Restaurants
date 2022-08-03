@@ -10,8 +10,7 @@ router.get('/', (req, res) => {
       res.render('index', { pageTitle: indexTitle, styleSheetLink: '/stylesheets/index.css', restaurants })
     })
     .catch(err => {
-      console.error(err)
-      return res.redirect('../')
+      return res.render('error', { errorMessage: err })
     })
 })
 
@@ -33,8 +32,7 @@ router.get('/search', (req, res) => {
       res.render('index', { pageTitle: indexTitle, styleSheetLink: '/stylesheets/index.css', restaurants: restaurants.results, isNotFind: restaurants.isNotFind, searchKeyword: input })
     })
     .catch(err => {
-      console.error(err)
-      return res.redirect('../')
+      return res.render('error', { errorMessage: err })
     })
 })
 

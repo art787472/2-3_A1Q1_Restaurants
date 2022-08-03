@@ -15,8 +15,7 @@ router.post('/new', (req, res) => {
   return Restaurants.create(restaurantData)// 存入資料庫
     .then(() => res.redirect('/')) // 新增完成後導回首頁
     .catch(err => {
-      console.error(err)
-      return res.redirect('../')
+      return res.render('error', { errorMessage: err })
     })
 })
 
@@ -29,8 +28,7 @@ router.get('/:restaurantId/edit-page', (req, res) => {
       res.render('edit', { restaurant: restaurantData })
     })
     .catch(err => {
-      console.error(err)
-      return res.redirect('../')
+      return res.render('error', { errorMessage: err })
     })
 })
 
@@ -41,8 +39,7 @@ router.get('/:restaurantId', (req, res) => {
       res.render('show', { pageTitle: restaurant.name, styleSheetLink: '/stylesheets/show.css', restaurant, apiKey })
     })
     .catch(err => {
-      console.error(err)
-      return res.redirect('../')
+      return res.render('error', { errorMessage: err })
     })
 })
 
@@ -64,8 +61,7 @@ router.post('/:restaurantId/edit', (req, res) => {
     })
     .then(() => res.redirect(`/restaurants/${id}`))
     .catch(err => {
-      console.error(err)
-      return res.redirect('../')
+      return res.render('error', { errorMessage: err })
     })
 })
 
@@ -75,8 +71,7 @@ router.post('/:restaurantId/delete', (req, res) => {
     .then(restaurant => restaurant.remove())
     .then(() => res.redirect('/'))
     .catch(err => {
-      console.error(err)
-      return res.redirect('../')
+      return res.render('error', { errorMessage: err })
     })
 })
 
