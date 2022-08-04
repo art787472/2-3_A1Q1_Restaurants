@@ -5,7 +5,7 @@
                 
                   <a class="btn btn-info" href="/restaurants/{{restaurant._id}}/edit-page">編輯</a>
                   
-                  <form action="./restaurants/{{ restaurant._id }}/delete" method="POST" style="display: inline;">
+                  <form action="./{{ restaurant._id }}?_method=DELETE" method="POST" style="display: inline;">
                     <button class="btn btn-danger" type="submit">刪除</button>
                   </form>
                 

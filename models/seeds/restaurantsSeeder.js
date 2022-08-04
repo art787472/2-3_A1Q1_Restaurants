@@ -1,15 +1,10 @@
-const mongoose = require('mongoose')
 const Restaurants = require('../restaurants') // 載入 todo model
-require('dotenv').config() // 載入環境變數
-const uri = process.env.MONGODB_URI
-
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // Load restaurants.json
 const restaurantsJSON = require('./restaurant.json')
 const restaurantsSeeds = restaurantsJSON.results
 
-const db = mongoose.connection
+const db = require('../../config/mongoose')
 db.on('error', () => {
   console.log('mongodb error!')
 })

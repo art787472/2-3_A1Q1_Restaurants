@@ -9,7 +9,7 @@ router.get('/new-page', (req, res) => {
   res.render('new', { apiKey })
 })
 
-router.post('/new', (req, res) => {
+router.post('/', (req, res) => {
   const restaurantData = req.body
   // 從 req.body 拿出表單裡的 name 資料
   return Restaurants.create(restaurantData)// 存入資料庫
@@ -32,6 +32,7 @@ router.get('/:restaurantId/edit-page', (req, res) => {
     })
 })
 
+
 router.get('/:restaurantId', (req, res) => {
   Restaurants.findById(req.params.restaurantId)
     .lean()
@@ -43,7 +44,7 @@ router.get('/:restaurantId', (req, res) => {
     })
 })
 
-router.post('/:restaurantId/edit', (req, res) => {
+router.put('/:restaurantId', (req, res) => {
   const id = req.params.restaurantId
   const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
   return Restaurants.findById(id)
@@ -65,7 +66,7 @@ router.post('/:restaurantId/edit', (req, res) => {
     })
 })
 
-router.post('/:restaurantId/delete', (req, res) => {
+router.delete('/:restaurantId', (req, res) => {
   const id = req.params.restaurantId
   return Restaurants.findById(id)
     .then(restaurant => restaurant.remove())

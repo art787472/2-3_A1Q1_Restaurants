@@ -6,6 +6,7 @@ const indexTitle = '我的餐廳'
 router.get('/', (req, res) => {
   Restaurants.find()
     .lean()
+    .sort({ _id: 'asc' })
     .then(restaurants => {
       res.render('index', { pageTitle: indexTitle, styleSheetLink: '/stylesheets/index.css', restaurants })
     })
@@ -34,6 +35,11 @@ router.get('/search', (req, res) => {
     .catch(err => {
       return res.render('error', { errorMessage: err })
     })
+})
+
+router.delete('/', (req, res) => {
+  console.log('delete')
+  return res.end('delete')
 })
 
 module.exports = router

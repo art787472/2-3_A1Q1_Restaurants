@@ -7,8 +7,6 @@
   <div class="search-bar-outer">
     <div class="search-bar-inner">
       <form action="/search" class="search-form">
-      {{!-- invisible input to save search filter --}}
-        <input type="hidden" class="filter" name="filter" value="name">
 
         <h4 class="mb-2">尋找餐廳：</h4>
         <div class="input-group">
@@ -18,25 +16,20 @@
 
             <div class="btn-group">
 
-             
-                <div class="btn-group search-option" role="group">
-                  <button type="button" class="btn dropdown-toggle btn-major" data-toggle="dropdown" aria-expanded="false">
-                    依餐廳名稱
-                  </button>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item filter-name" >依餐廳名稱</a>
-                    <a class="dropdown-item  filter-location" >依地區</a>
-                    <a class="dropdown-item filter-category" >依類別</a>
-                  </div>
-                </div>
+                <select name="filter" class="btn btn-major search-option">
+                  <option class="bg-white text-black" value="name">依餐廳名稱</option>
+                  <option class="bg-white text-black" value="location">依地區</option>
+                  <option class="bg-white text-black" value="category">依類別</option>
+                </select>
+               
                 <button class="btn btn-major" type="submit" id="search-button">
                   <i class="fas fa-search"></i>
                 </button>
 
-
             </div>
             
-          </div>
+          </div> 
+          
         </div>
       </form>
 
@@ -53,7 +46,9 @@
     {{/if}}
   </div>
 </div>
-
+<form action="./?_method=DELETE" method="post">
+<input type="submit">
+</form>
 
 
 <!-- restaurant list -->
@@ -135,39 +130,31 @@
 </div>
 
 <script>
- const searchOption = document.querySelector('.search-option')
- const searchBtn = searchOption.querySelector('button')
- const filter = document.querySelector('.filter')
  const searchInput = document.querySelector('.search-input')
  const searchForm = document.querySelector('.search-form')
+ const searchOption = document.querySelector('.search-option')
  const modalAlert = document.querySelector('.modal-footer form')
  const deleteBtn = document.querySelectorAll('.delete-btn')
 
- searchOption.addEventListener('click', e => {
-  if (e.target.matches('.dropdown-item')) {
-    searchBtn.textContent = e.target.textContent
-    switch(searchBtn.textContent) {
-      case '依餐廳名稱':
-        filter.value = 'name'
-        searchInput.placeholder = '請輸入餐廳名稱'
-        break
-      case '依地區':
-        filter.value = 'location'
-        searchInput.placeholder = '請輸入餐廳地點'
-        break
-      case '依類別':
-        filter.value = 'category'
-        searchInput.placeholder = '請輸入餐廳類別'
-        break
+searchOption.addEventListener('change', e => {
+    switch(e.target.value) {
+      case 'name':
+          searchInput.placeholder = "請輸入餐廳名稱"
+          break
+      case 'location':
+          searchInput.placeholder = "請輸入餐廳地點"
+          break
+      case 'category':
+          searchInput.placeholder = "請輸入餐廳類別"
+          break
     }
-  }
- })
+  })
+
 
 deleteBtn.forEach(btn => {
   btn.addEventListener('click', e => {
   const id = e.target.dataset.id
-  console.log(id)
-  modalAlert.action = `/restaurants/${id}/delete`
+  modalAlert.action = `./restaurants/${id}?_method=DELETE`
 })
 })
 
@@ -176,7 +163,6 @@ searchForm.addEventListener('submit', e => {
     e.preventDefault()
     e.stopPropagation()
     $('#alertModal').modal('show')
-    console.log('alert')
   }
 })
 
