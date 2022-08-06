@@ -6,8 +6,16 @@ header {
   color: #4592af;
 }
 
+.navbar .add-btn {
+  background-color: #4592af;
+}
+
 .navbar .navbar-brand:hover {
   color: #226089;
+}
+
+.navbar .add-btn:hover {
+  background-color: #226089;
 }
 
 .banner {
@@ -109,6 +117,10 @@ header {
 
 a:hover {
   text-decoration: none;
+}
+
+.dropdown-menu {
+  left: -200px;
 }
 
 @media screen and (max-width: 992px) {
