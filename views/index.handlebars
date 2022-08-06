@@ -6,12 +6,12 @@
 
   <div class="search-bar-outer">
     <div class="search-bar-inner">
-      <form action="/search" class="search-form">
+      <form action="/search" class="search-form w-100">
 
-        <h4 class="mb-2">尋找餐廳：</h4>
         <div class="input-group">
-          <input type="text" name="keyword" class="form-control search-input" placeholder="請輸入餐廳名稱" aria-label="Restaurant Name..."
+          <input type="text" name="keyword" class="form-control search-input" placeholder="搜尋餐廳名稱" aria-label="Restaurant Name..."
             value="{{input}}" aria-describedby="search-button">
+
           <div class="input-group-append">
 
             <div class="btn-group">
@@ -33,9 +33,6 @@
         </div>
       </form>
 
-        <a class="btn btn-major btn-block mt-3" href="/restaurants/new-page">新增餐廳</a>
-      
-    </div>
     {{#if isNotFind}}
     <div class="alert alert-warning alert-dismissible fade show mb-2" role="alert">
       <span>抱歉！找不到<strong>「{{searchKeyword}}」</strong>的搜尋結果</span>
@@ -46,17 +43,32 @@
     {{/if}}
   </div>
 </div>
-<form action="./?_method=DELETE" method="post">
-<input type="submit">
-</form>
-
+</div>
 
 <!-- restaurant list -->
 
 <div class="container mt-5">
+
+  <div class="info-bar d-flex justyfy-content-between mb-3">
+       <div class="dropdown ml-auto">
+        <button class="btn btn-major dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+          {{{ sortIcon }}}
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="/?sort-by=name&order=1"><i class="fas fa-sort-alpha-down mr-1"></i>照名稱排列（A > Z）</a>
+          <a class="dropdown-item" href="/?sort-by=name&order=-1"><i class="fas fa-sort-alpha-up mr-1"></i>照名稱排列（Z > A）</a>
+          <a class="dropdown-item" href="/?sort-by=category"><i class="fas fa-utensils mr-1"></i>照類別</a>
+          <a class="dropdown-item" href="/?sort-by=location"><i class="fas fa-map-marker-alt mr-1"></i>照地區</a>
+          <a class="dropdown-item" href="/?sort-by=rating&order=1"><i class="fas fa-sort-numeric-down mr-1"></i>照評等排列（小 > 大）</a>
+          <a class="dropdown-item" href="/?sort-by=rating&order=-1"><i class="fas fa-sort-numeric-up mr-1"></i>照評等排列（大 > 小）</a>
+        </div>
+      </div>
+    </div>
+
   <div class="row">
+
         {{#each restaurants}}
-        <div class="col-md-4">
+        <div class="col-sm-6 col-md-4">
           <a href="/restaurants/{{this._id}}">
           <div class="card mb-3">
             
@@ -139,13 +151,13 @@
 searchOption.addEventListener('change', e => {
     switch(e.target.value) {
       case 'name':
-          searchInput.placeholder = "請輸入餐廳名稱"
+          searchInput.placeholder = "搜尋餐廳名稱"
           break
       case 'location':
-          searchInput.placeholder = "請輸入餐廳地點"
+          searchInput.placeholder = "搜尋餐廳地點"
           break
       case 'category':
-          searchInput.placeholder = "請輸入餐廳類別"
+          searchInput.placeholder = "搜尋餐廳類別"
           break
     }
   })
@@ -168,3 +180,21 @@ searchForm.addEventListener('submit', e => {
 
 
 </script>
+
+<style>
+  select {
+     font-family: "Font Awesome 5 Free";
+  }
+
+    .icon::before {
+      display: inline-block;
+      font-style: normal;
+      font-variant: normal;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+    }
+
+  .sort-icon::before {
+    font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f007";
+  }
+</style>

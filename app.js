@@ -1,26 +1,14 @@
 const express = require('express')
 require('dotenv').config()
-const app = express()
 require('./config/mongoose')
-const mongoose = require('mongoose') // 載入 mongoose
 const methodOverride = require('method-override')
-const uri = process.env.MONGODB_URI
-
+const bodyParser = require('body-parser')
+const exphbs = require('express-handlebars')
 const routes = require('./routes')
-// connect to database
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-const db = mongoose.connection
-db.on('error', () => {
-  console.log('mongodb error!')
-})
-db.once('open', () => {
-  console.log('mongodb connected!')
-})
+
+const app = express()
 
 const port = process.env.PORT || 3001
-
-// require handle-bar
-const exphbs = require('express-handlebars')
 
 // setting template engine
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
@@ -29,17 +17,8 @@ app.set('view engine', 'handlebars')
 // setting file location for static files
 app.use(express.static('public'))
 
-// 引用 body-parser
-const bodyParser = require('body-parser')
 // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
 app.use(bodyParser.urlencoded({ extended: true }))
-
-// 引用路由
-
-
-
-
-// 載入 method-override
 
 // 設定每一筆請求都會透過 methodOverride 進行前置處理
 app.use(methodOverride('_method'))

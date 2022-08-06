@@ -4,11 +4,29 @@ const Restaurants = require('../../models/restaurants')
 const indexTitle = '我的餐廳'
 
 router.get('/', (req, res) => {
-  Restaurants.find()
+  const sortBy = req.query['sort-by'] || '_id'
+  const order = Number(req.query.order) || 1
+  let sortIcon = ''
+
+  if (sortBy === '_id') {
+    sortIcon = '<i class="fas fa-sort-amount-down"></i>'
+  } else if (sortBy === 'name') {
+    if (order === 1) sortIcon = '<i class="fas fa-sort-alpha-down"></i>'
+    else sortIcon = '<i class="fas fa-sort-alpha-up"></i>'
+  } else if (sortBy === 'location') {
+    sortIcon = '<i class="fas fa-map-marker-alt"></i>'
+  } else if (sortBy === 'category') {
+    sortIcon = '<i class="fas fa-utensils"></i>'
+  } else if (sortBy === 'rating') {
+    if (order === 1) sortIcon = '<i class="fas fa-star"></i><i class="fas fa-sort-numeric-down"></i>'
+    else sortIcon = '<i class="fas fa-star"></i><i class="fas fa-sort-numeric-up"></i>'
+  }
+
+  return Restaurants.find()
     .lean()
-    .sort({ _id: 'asc' })
+    .sort({ [sortBy]: order })
     .then(restaurants => {
-      res.render('index', { pageTitle: indexTitle, styleSheetLink: '/stylesheets/index.css', restaurants })
+      res.render('index', { pageTitle: indexTitle, styleSheetLink: '/stylesheets/index.css', restaurants, sortIcon })
     })
     .catch(err => {
       return res.render('error', { errorMessage: err })

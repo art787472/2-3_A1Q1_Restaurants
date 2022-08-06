@@ -11,9 +11,8 @@ router.get('/new-page', (req, res) => {
 
 router.post('/', (req, res) => {
   const restaurantData = req.body
-  // 從 req.body 拿出表單裡的 name 資料
-  return Restaurants.create(restaurantData)// 存入資料庫
-    .then(() => res.redirect('/')) // 新增完成後導回首頁
+  return Restaurants.create(restaurantData)
+    .then(() => res.redirect('/'))
     .catch(err => {
       return res.render('error', { errorMessage: err })
     })
