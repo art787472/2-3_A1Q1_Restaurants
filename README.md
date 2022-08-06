@@ -35,4 +35,4 @@
    `npm run dev`
 6. 若要瀏覽種子資料在終端機輸入  
    `npm run dev`
-7. 在瀏覽器輸入 http://localhost:3000
+7. 依照 terminal 上的指示在瀏覽器輸入 http://localhost:[你的port]
