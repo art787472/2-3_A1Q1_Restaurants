@@ -6,9 +6,10 @@ const users = require('./modules/users')
 const notfound = require('./modules/notfound')
 const { authenticator } = require('./../middleware/auth')
 
-router.use('/', home)
-router.use('/users', users)
-router.use('/restaurants', restaurants)
+
+router.use('/users',users)
+router.use('/restaurants', authenticator,restaurants)
+router.use('/', authenticator, home)
 router.use('*', notfound)
 
 module.exports = router
