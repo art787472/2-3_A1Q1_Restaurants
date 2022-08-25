@@ -6,6 +6,7 @@ const indexTitle = '我的餐廳'
 router.get('/', (req, res) => {
   const sortBy = req.query['sort-by'] || '_id'
   const order = Number(req.query.order) || 1
+  const userId = req.user._id
   let sortIcon = ''
 
   if (sortBy === '_id') {
@@ -22,7 +23,7 @@ router.get('/', (req, res) => {
     else sortIcon = '<i class="fas fa-star"></i><i class="fas fa-sort-numeric-up"></i>'
   }
 
-  return Restaurants.find()
+  return Restaurants.find({ userId })
     .lean()
     .sort({ [sortBy]: order })
     .then(restaurants => {
@@ -53,11 +54,6 @@ router.get('/search', (req, res) => {
     .catch(err => {
       return res.render('error', { errorMessage: err })
     })
-})
-
-router.delete('/', (req, res) => {
-  console.log('delete')
-  return res.end('delete')
 })
 
 module.exports = router
