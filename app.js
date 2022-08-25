@@ -8,7 +8,7 @@ const routes = require('./routes')
 
 const app = express()
 
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 3000
 
 // setting template engine
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
