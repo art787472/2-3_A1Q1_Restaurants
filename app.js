@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require('express-session')
 require('dotenv').config()
 require('./config/mongoose')
 const methodOverride = require('method-override')
@@ -13,6 +14,13 @@ const port = process.env.PORT || 3000
 // setting template engine
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
+
+// set up session
+app.use(session({
+  secret: "MySecret",
+  resave: false,
+  saveUninitialized: true
+}))
 
 // setting file location for static files
 app.use(express.static('public'))
