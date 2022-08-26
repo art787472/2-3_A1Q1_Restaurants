@@ -8,6 +8,7 @@ const exphbs = require('express-handlebars')
 const routes = require('./routes')
 const usePassport = require('./config/passport')
 const flash = require('connect-flash')
+const cookieParser = require('cookie-parser')
 
 const app = express()
 
@@ -17,10 +18,11 @@ const port = process.env.PORT || 3000
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
+app.use(cookieParser())
 // set up session
 app.use(session({
   secret: "MySecret",
-  resave: false,
+  resave: true,
   saveUninitialized: true
 }))
 
@@ -40,8 +42,7 @@ app.use((req, res, next) => {
   res.locals.user = req.user
   res.locals.success_msg = req.flash('success_msg')
   res.locals.warning_msg = req.flash('warning_msg')
-  res.locals.error = req.flash('error')
-  console.log('errors', req.flash('error'))
+  res.locals.errors = req.flash('error')
   next()
 })
 
