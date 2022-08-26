@@ -49,7 +49,12 @@ router.post('/register', (req, res) => {
         email,
         password: hash
       }))
-      .then(() => res.redirect('/'))
+      .then(user => {
+        req.login(user, err => {
+          if (err) return next(err)
+          return res.redirect('/')
+        })
+      })
       .catch(err => {
       return res.render('error', { errorMessage: err })
     })
@@ -68,7 +73,7 @@ router.post('/login', passport.authenticate('local', {
   failureMessage: true
 }))
 
-router.get('/logout', (req, res) => {
+router.get('/logout', (req, res, next) => {
   req.logout(err => {
     if (err) return next(err)
     res.redirect('/users/login')
