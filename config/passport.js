@@ -3,12 +3,13 @@ const LocalStrategy = require('passport-local').Strategy
 const User = require('./../models/users')
 const bcrypt = require('bcrypt')
 const FacebookStrategy = require('passport-facebook').Strategy
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 
 const facebookId = process.env.FACEBOOK_ID
 const facebookSecret = process.env.FACEBOOK_SECRET
 const facebookCallback = process.env.FACEBOOK_CALLBACK
-console.log(facebookId, facebookSecret)
 
 module.exports = app => {
   // 初始化 Passport 模組
