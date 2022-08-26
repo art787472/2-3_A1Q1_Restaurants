@@ -7,8 +7,8 @@ const notfound = require('./modules/notfound')
 const { authenticator } = require('./../middleware/auth')
 
 
-router.use('/users',users)
-router.use('/restaurants', authenticator,restaurants)
+router.use('/users', users)
+router.use('/restaurants', authenticator, restaurants)
 router.use('/', authenticator, home)
 router.use('*', notfound)
 
