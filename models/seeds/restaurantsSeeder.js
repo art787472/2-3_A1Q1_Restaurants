@@ -8,6 +8,21 @@ if (process.env.NODE_ENV !== 'production') {
 const restaurantsJSON = require('./restaurant.json')
 const restaurantsSeeds = restaurantsJSON.results
 
+const generateSeed = async (user, dataArr) => {
+  try {
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(user.password, salt)
+    const userData = await User.create({email: user.email, password: hash})
+    const userId = userData._id
+    const data = await Promise.all(Array.from({ length: dataArr.length }, (_, i) => Restaurants.create({...dataArr[i], userId})))
+
+    return `${user.email} seed generated`
+
+  } catch (err) {
+    throw err
+  }
+}
+
 const SEED_USER1 = {
   email: 'user1@example.com',
   password: '12345678'
@@ -24,35 +39,12 @@ db.on('error', () => {
 })
 db.once('open', () => {
   console.log('mongodb connected!')
-  bcrypt
-    .genSalt(10)
-    .then(salt => bcrypt.hash(SEED_USER1.password, salt))
-    .then(hash => User.create({
-      email: SEED_USER1.email,
-      password: hash
-    }))
-    .then(user => {
-      const userId = user._id  
-      return Promise.all(Array.from({ length: 3 }, (_, i) => Restaurants.create({...restaurantsSeeds[i], userId})))
-    })
+  
+   Promise.all([generateSeed(SEED_USER1, restaurantsSeeds.slice(0, 3)), generateSeed(SEED_USER2, restaurantsSeeds.slice(3, 6))])
+    .then(data => data.forEach(seed => console.log(seed)))
     .then(() => {
-      console.log('User1 seed data generated.')
-    })
-
-  bcrypt
-    .genSalt(10)
-    .then(salt => bcrypt.hash(SEED_USER2.password, salt))
-    .then(hash => User.create({
-      email: SEED_USER2.email,
-      password: hash
-    }))
-    .then(user => {
-      const userId = user._id  
-      return Promise.all(Array.from({ length: 3 }, (_, i) => Restaurants.create({...restaurantsSeeds[i + 3], userId})))
-    })
-    .then(() => {
-      console.log('User2 seed data generated.')
+      console.log('All seeds generated')
       process.exit()
-    }) 
+    })
 })
 
