@@ -100,9 +100,18 @@
           </a>
         </div>
         {{/each}}
-
-      
-    
+        {{!-- default card --}}
+        <div class="col-sm-6 col-md-4 pb-3">
+          <a href="/restaurants/new-page">
+            <div class="card h-100">
+               <div class="card-img__container d-flex justify-content-center align-items-center"><i class="fas fa-plus"></i></div>
+              <div class="card-body p-3">
+                <h6 class="card-title mb-1 text-center">點我新增餐廳</h6>
+              </div>
+              
+            </div>
+          </a>
+        </div>
   </div>
 
   <div class="modal fade" tabindex="-1" role="dialog" id="deleteModal">

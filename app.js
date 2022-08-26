@@ -49,5 +49,5 @@ app.use((req, res, next) => {
 app.use(routes)
 
 app.listen(port, () => {
-  console.log(`app is on: localhost/${port}`)
+  console.log(`app is on: localhost:${port}`)
 })
